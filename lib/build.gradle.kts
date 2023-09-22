@@ -5,6 +5,7 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.3/userguide/building_java_projects.html in the Gradle documentation.
  */
 import com.diffplug.gradle.spotless.SpotlessExtension
+import okhttp3.Credentials.basic
 
 plugins {
   // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -71,8 +72,8 @@ tasks.jar {
 //publishing {
 //  repositories {
 //    maven {
-//      name = "GitHubPackages"
-//      url = uri("https://maven.pkg.github.com/afidalgo0811/shared-library")
+//      name = "bebetokl"
+//      url = uri("https://pkgs.dev.azure.com/afidalgo/_packaging/bebetokl/maven/v1")
 //      credentials {
 //        username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
 //        password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
