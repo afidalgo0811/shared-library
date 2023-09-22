@@ -5,6 +5,7 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.3/userguide/building_java_projects.html in the Gradle documentation.
  */
 import com.diffplug.gradle.spotless.SpotlessExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
   // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -15,13 +16,20 @@ plugins {
   `maven-publish`
 }
 
-group = "com.afidalgo"
-
-version = "0.1.0-SNAPSHOT"
+val spaceUsername: String by project
+val spacePassword: String by project
 
 repositories {
   // Use Maven Central for resolving dependencies.
   mavenCentral()
+  maven {
+    url = uri("https://pkgs.dev.azure.com/afidalgo/_packaging/bebetokl/maven/v1")
+    authentication { create<BasicAuthentication>("basic") }
+    credentials {
+      username = spaceUsername
+      password = spacePassword
+    }
+  }
 }
 
 dependencies {
@@ -41,9 +49,10 @@ dependencies {
   implementation("com.google.guava:guava:32.1.1-jre")
 }
 
-java { withSourcesJar() }
-// Apply a specific Java toolchain to ease working on different environments.
-java { toolchain { languageVersion.set(JavaLanguageVersion.of(20)) } }
+java {
+  sourceCompatibility = JavaVersion.VERSION_17
+  targetCompatibility = JavaVersion.VERSION_17
+}
 
 tasks.named<Test>("test") {
   // Use JUnit Platform for unit tests.
@@ -68,16 +77,29 @@ tasks.jar {
   }
 }
 
-// publishing {
-//  repositories {
-//    maven {
-//      name = "bebetokl"
-//      url = uri("https://pkgs.dev.azure.com/afidalgo/_packaging/bebetokl/maven/v1")
-//      credentials {
-//        username = project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-//        password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
-//      }
-//    }
-//  }
-//  publications { register<MavenPublication>("gpr") { from(components["java"]) } }
-// }
+publishing {
+  publications {
+    create<MavenPublication>("maven") {
+      groupId = "com.afidalgo"
+      artifactId = "sample"
+      version = "0.9-SNAPSHOT"
+      from(components["java"])
+    }
+  }
+  repositories {
+    maven {
+      url = uri("https://maven.pkg.jetbrains.space/afidalgo/p/main/maven")
+      credentials {
+        username = spaceUsername
+        password = spacePassword
+      }
+    }
+  }
+}
+
+tasks.withType<KotlinCompile> {
+  kotlinOptions {
+    freeCompilerArgs += "-Xjsr305=strict"
+    jvmTarget = "17"
+  }
+}
