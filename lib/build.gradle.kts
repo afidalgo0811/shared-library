@@ -17,8 +17,6 @@ plugins {
   `maven-publish`
 }
 
-val spaceUsername: String by project
-val spacePassword: String by project
 
 repositories {
   // Use Maven Central for resolving dependencies.
@@ -27,8 +25,8 @@ repositories {
     url = uri("https://pkgs.dev.azure.com/afidalgo/_packaging/bebetokl/maven/v1")
     authentication { create<BasicAuthentication>("basic") }
     credentials {
-      username = ((spaceUsername == (null ?: System.getenv("SPACE_USERNAME")))).toString()
-      password = ((spacePassword == (null ?: System.getenv("SPACE_PASSWORD")))).toString()
+      username = System.getenv("SPACE_USERNAME")
+      password = System.getenv("SPACE_PASSWORD")
     }
   }
 }
@@ -91,8 +89,8 @@ publishing {
     maven {
       url = uri("https://maven.pkg.jetbrains.space/afidalgo/p/main/maven")
       credentials {
-        username = ((spaceUsername == (null ?: System.getenv("SPACE_USERNAME")))).toString()
-        password = ((spacePassword == (null ?: System.getenv("SPACE_PASSWORD")))).toString()
+        username = System.getenv("SPACE_USERNAME")
+        password = System.getenv("SPACE_PASSWORD")
       }
     }
   }
@@ -108,8 +106,6 @@ tasks.withType<KotlinCompile> {
 tasks.create("printVersion") {
   doLast {
     println("The project current version is ${project.semanticVersion.version.get()}")
-    println("The project current spaceUsername is $spaceUsername")
-    println("The project current spacePassword is $spacePassword")
     println(System.getenv("SPACE_USERNAME"))
     println(System.getenv("SPACE_PASSWORD"))
   }
