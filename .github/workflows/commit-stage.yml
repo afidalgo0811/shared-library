@@ -3,6 +3,8 @@ on: [push]
 env:
   JETBRAIN_SPACE_URL: https://maven.pkg.jetbrains.space/afidalgo/p/main/maven    
   JAVA_VERSION: '17'
+  SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+  SPACE_PASS: ${{ secrets.SPACE_PASSWORD }}
   
 
 jobs:
@@ -58,7 +60,7 @@ jobs:
           ./gradlew build
   package:
     name: Package and Publish
-    if: ${{ github.ref == 'refs/heads/main' }}
+    #if: ${{ github.ref == 'refs/heads/main' }}
     needs: [build, test]
     runs-on: ubuntu-22.04
     permissions:
@@ -77,4 +79,4 @@ jobs:
       - name: Publish artifactory to JetBrain Space
         run: |
           chmod +x gradlew
-          ./gradlew publish
+          ./gradlew publish --stacktrace
