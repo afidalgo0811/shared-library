@@ -108,7 +108,9 @@ tasks.withType<KotlinCompile> {
 tasks.create("printVersion") {
   doLast {
     println("The project current version is ${project.semanticVersion.version.get()}")
-    println("The project current user is $spaceUsername")
-    println("The project current user is $spacePassword")
+    println("The project current spaceUsername is $spaceUsername")
+    println("The project current spacePassword is $spacePassword")
+    println(System.getenv("SPACE_USERNAME"))
+    println(System.getenv("SPACE_PASSWORD"))
   }
 }

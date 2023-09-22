@@ -1,11 +1,11 @@
 name: Commit Stage
 on: [push]
 env:
-  JETBRAIN_SPACE_URL: https://maven.pkg.jetbrains.space/afidalgo/p/main/maven    
+  JETBRAIN_SPACE_URL: https://maven.pkg.jetbrains.space/afidalgo/p/main/maven
   JAVA_VERSION: '17'
   SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
   SPACE_PASS: ${{ secrets.SPACE_PASSWORD }}
-  
+
 
 jobs:
   # build:
@@ -61,7 +61,7 @@ jobs:
   package:
     name: Package and Publish
     #if: ${{ github.ref == 'refs/heads/main' }}
-   # needs: [build, test]
+    # needs: [build, test]
     runs-on: ubuntu-22.04
     permissions:
       contents: read
@@ -77,6 +77,9 @@ jobs:
           java-version: ${{ env.JAVA_VERSION }}
           cache: gradle
       - name: Publish artifactory to JetBrain Space
+        env: # Or as an environment variable
+          SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
+          SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         run: |
           chmod +x gradlew
           ./gradlew printVersion
