@@ -82,4 +82,4 @@ jobs:
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}
         run: |
           chmod +x gradlew
-          ./gradlew printVersion
+          ./gradlew publish
