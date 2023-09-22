@@ -5,7 +5,6 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.3/userguide/building_java_projects.html in the Gradle documentation.
  */
 import com.diffplug.gradle.spotless.SpotlessExtension
-import okhttp3.Credentials.basic
 
 plugins {
   // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
@@ -69,7 +68,7 @@ tasks.jar {
   }
 }
 
-//publishing {
+// publishing {
 //  repositories {
 //    maven {
 //      name = "bebetokl"
@@ -81,4 +80,4 @@ tasks.jar {
 //    }
 //  }
 //  publications { register<MavenPublication>("gpr") { from(components["java"]) } }
-//}
+// }
