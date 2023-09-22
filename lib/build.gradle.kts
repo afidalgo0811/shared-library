@@ -11,6 +11,7 @@ plugins {
   // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
   id("org.jetbrains.kotlin.jvm") version "1.9.0"
   id("com.diffplug.spotless") version "6.19.0"
+  id("com.glovoapp.semantic-versioning") version "1.1.10"
   // Apply the java-library plugin for API and implementation separation.
   `java-library`
   `maven-publish`
@@ -82,7 +83,7 @@ publishing {
     create<MavenPublication>("maven") {
       groupId = "com.afidalgo"
       artifactId = "sample"
-      version = "0.9-SNAPSHOT"
+      version = "${version}-SNAPSHOT"
       from(components["java"])
     }
   }
@@ -101,5 +102,13 @@ tasks.withType<KotlinCompile> {
   kotlinOptions {
     freeCompilerArgs += "-Xjsr305=strict"
     jvmTarget = "17"
+  }
+}
+
+tasks.create("printVersion") {
+  doLast {
+    println("The project current version is ${project.semanticVersion.version.get()}")
+    println("The project current user is $spaceUsername")
+    println("The project current user is $spacePassword")
   }
 }
