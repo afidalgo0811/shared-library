@@ -27,7 +27,7 @@ repositories {
     url = uri("https://pkgs.dev.azure.com/afidalgo/_packaging/bebetokl/maven/v1")
     authentication { create<BasicAuthentication>("basic") }
     credentials {
-      username = spaceUsername ?: System.getenv("SPACE_USERNAME")
+      username = ((spaceUsername==(null ?: System.getenv("SPACE_USERNAME")))).toString()
       password = spacePassword ?: System.getenv("SPACE_PASSWORD")
     }
   }
@@ -91,7 +91,7 @@ publishing {
     maven {
       url = uri("https://maven.pkg.jetbrains.space/afidalgo/p/main/maven")
       credentials {
-        username = spaceUsername ?: System.getenv("SPACE_USERNAME")
+        username = ((spaceUsername==(null ?: System.getenv("SPACE_USERNAME")))).toString()
         password = spacePassword ?: System.getenv("SPACE_PASSWORD")
       }
     }
