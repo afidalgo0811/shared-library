@@ -1,9 +1,9 @@
 name: Commit Stage
 on: [push]
 env:
-  AZURE_ARTIFACTS_FEED_URL: https://pkgs.dev.azure.com/afidalgo/_packaging/bebetokl/maven/v1    
-  BUILD_CONFIGURATION: 'Release'    # set this to the appropriate build configuration
-  JAVA_VERSION: '17' 
+  JETBRAIN_SPACE_URL: https://maven.pkg.jetbrains.space/afidalgo/p/main/maven    
+  JAVA_VERSION: '17'
+  
 
 jobs:
   build:
@@ -56,3 +56,25 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew build
+  package:
+    name: Package and Publish
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs: [build, test]
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      packages: write
+      security-events: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: gradle
+      - name: Publish artifactory to JetBrain Space
+        run: |
+          chmod +x gradlew
+          ./gradlew publish
