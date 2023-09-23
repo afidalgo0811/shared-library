@@ -88,7 +88,7 @@ publishing {
   publications {
     create<MavenPublication>("maven") {
       groupId = "com.afidalgo"
-      artifactId = "sample"
+      artifactId = "shared-library"
       version = "${version}-SNAPSHOT"
       from(components["java"])
     }
@@ -99,7 +99,6 @@ publishing {
       credentials {
         username = usr
         password = psw
-        println("usr $usr")
       }
     }
   }
@@ -113,8 +112,5 @@ tasks.withType<KotlinCompile> {
 }
 
 tasks.create("printVersion") {
-  doLast {
-    println("The project current version is ${project.semanticVersion.version.get()}")
-    println("url $urlArtifactRepository")
-  }
+  doLast { println("The project current version is ${project.semanticVersion.version.get()}") }
 }
