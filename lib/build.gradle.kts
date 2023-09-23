@@ -24,13 +24,13 @@ val userName: String? = System.getenv("SPACE_USERNAME")
 val passWord: String? = System.getenv("SPACE_PASSWORD")
 val usr = userName ?: spaceUsername // checks env first
 val psw = passWord ?: spacePassword // checks env first
-val urlArtifactRepository = ext["jetbrains.url"]
+val urlArtifactRepository = ext["jetbrains.url"].toString()
 
 repositories {
   // Use Maven Central for resolving dependencies.
   mavenCentral()
   maven {
-    url = urlArtifactRepository?.let { uri(it) }!!
+    url = uri(urlArtifactRepository)
     authentication { create<BasicAuthentication>("basic") }
     credentials {
       username = usr
@@ -95,7 +95,7 @@ publishing {
   }
   repositories {
     maven {
-      url = urlArtifactRepository?.let { uri(it) }!!
+      url = uri(urlArtifactRepository)
       credentials {
         username = usr
         password = psw

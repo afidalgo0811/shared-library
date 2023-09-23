@@ -1,64 +1,64 @@
 name: Commit Stage
-on: [push]
+on: [ push ]
 env:
   JAVA_VERSION: '17'
   SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
   SPACE_PASS: ${{ secrets.SPACE_PASSWORD }}
 jobs:
-  # build:
-  #   name: Build
-  #   runs-on: ubuntu-22.04
-  #   steps:
-  #     - name: Checkout source code
-  #       uses: actions/checkout@v3
-  #     - name: Set up JDK
-  #       uses: actions/setup-java@v3
-  #       with:
-  #         distribution: temurin
-  #         java-version: ${{ env.JAVA_VERSION }}
-  #         cache: gradle
-  #     - name: Build with gradle
-  #       run: |
-  #         chmod +x gradlew
-  #         ./gradlew build -x test
-  # test:
-  #   name: Test
-  #   runs-on: ubuntu-22.04
-  #   needs: build
-  #   permissions:
-  #     contents: read
-  #     security-events: write
-  #     actions: read
-  #   steps:
-  #     - name: Checkout source code
-  #       uses: actions/checkout@v3
-  #     - name: Set up JDK
-  #       uses: actions/setup-java@v3
-  #       with:
-  #         distribution: temurin
-  #         java-version: ${{ env.JAVA_VERSION }}
-  #         cache: gradle
-  #     - name: Code vulnerability scanning
-  #       uses: anchore/scan-action@v3
-  #       id: scan
-  #       with:
-  #         path: '${{ github.workspace}}'
-  #         fail-build: false
-  #         severity-cutoff: high
-  #         acs-report-enable: true
-  #     - name: Upload vulnerability report
-  #       uses: github/codeql-action/upload-sarif@v2
-  #       if: success() || failure()
-  #       with:
-  #         sarif_file: ${{ steps.scan.outputs.sarif }}
-  #     - name: Build, Unit test and Integration test
-  #       run: |
-  #         chmod +x gradlew
-  #         ./gradlew build
+  build:
+    name: Build
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: gradle
+      - name: Build with gradle
+        run: |
+          chmod +x gradlew
+          ./gradlew build -x test
+  test:
+    name: Test
+    runs-on: ubuntu-22.04
+    needs: build
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v3
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: ${{ env.JAVA_VERSION }}
+          cache: gradle
+      - name: Code vulnerability scanning
+        uses: anchore/scan-action@v3
+        id: scan
+        with:
+          path: '${{ github.workspace}}'
+          fail-build: false
+          severity-cutoff: high
+          acs-report-enable: true
+      - name: Upload vulnerability report
+        uses: github/codeql-action/upload-sarif@v2
+        if: success() || failure()
+        with:
+          sarif_file: ${{ steps.scan.outputs.sarif }}
+      - name: Build, Unit test and Integration test
+        run: |
+          chmod +x gradlew
+          ./gradlew build
   package:
     name: Package and Publish
-    #if: ${{ github.ref == 'refs/heads/main' }}
-    # needs: [build, test]
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs: [ build, test ]
     runs-on: ubuntu-22.04
     permissions:
       contents: read
