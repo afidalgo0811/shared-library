@@ -1,7 +1,6 @@
 name: Commit Stage
 on: [push]
 env:
-  JETBRAIN_SPACE_URL: https://maven.pkg.jetbrains.space/afidalgo/p/main/maven
   JAVA_VERSION: '17'
   SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
   SPACE_PASS: ${{ secrets.SPACE_PASSWORD }}
