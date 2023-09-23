@@ -17,6 +17,8 @@ plugins {
   `maven-publish`
 }
 
+val spaceUsername: String? by project
+val spacePassword: String? by project
 
 repositories {
   // Use Maven Central for resolving dependencies.
