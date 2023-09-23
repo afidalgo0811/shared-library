@@ -11,23 +11,30 @@ plugins {
   // Apply the org.jetbrains.kotlin.jvm Plugin to add support for Kotlin.
   id("org.jetbrains.kotlin.jvm") version "1.9.0"
   id("com.diffplug.spotless") version "6.19.0"
+  id("com.glovoapp.semantic-versioning") version "1.1.10"
   // Apply the java-library plugin for API and implementation separation.
   `java-library`
   `maven-publish`
 }
 
-val spaceUsername: String by project
-val spacePassword: String by project
+// reading from gradle.properties file vs getting the value from system env in the pipeline
+val spaceUsername: String? by project
+val spacePassword: String? by project
+val userName: String? = System.getenv("SPACE_USERNAME")
+val passWord: String? = System.getenv("SPACE_PASSWORD")
+val usr = userName ?: spaceUsername // checks env first
+val psw = passWord ?: spacePassword // checks env first
+val urlArtifactRepository = ext["jetbrains.url"].toString()
 
 repositories {
   // Use Maven Central for resolving dependencies.
   mavenCentral()
   maven {
-    url = uri("https://pkgs.dev.azure.com/afidalgo/_packaging/bebetokl/maven/v1")
+    url = uri(urlArtifactRepository)
     authentication { create<BasicAuthentication>("basic") }
     credentials {
-      username = spaceUsername
-      password = spacePassword
+      username = usr
+      password = psw
     }
   }
 }
@@ -82,16 +89,17 @@ publishing {
     create<MavenPublication>("maven") {
       groupId = "com.afidalgo"
       artifactId = "sample"
-      version = "0.9-SNAPSHOT"
+      version = "${version}-SNAPSHOT"
       from(components["java"])
     }
   }
   repositories {
     maven {
-      url = uri("https://maven.pkg.jetbrains.space/afidalgo/p/main/maven")
+      url = uri(urlArtifactRepository)
       credentials {
-        username = spaceUsername
-        password = spacePassword
+        username = usr
+        password = psw
+        println("usr $usr")
       }
     }
   }
@@ -101,5 +109,12 @@ tasks.withType<KotlinCompile> {
   kotlinOptions {
     freeCompilerArgs += "-Xjsr305=strict"
     jvmTarget = "17"
+  }
+}
+
+tasks.create("printVersion") {
+  doLast {
+    println("The project current version is ${project.semanticVersion.version.get()}")
+    println("url $urlArtifactRepository")
   }
 }
