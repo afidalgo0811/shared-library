@@ -21,10 +21,10 @@ plugins {
 val spaceUsername: String? by project
 val spacePassword: String? by project
 val username: String? = System.getenv("SPACE_USERNAME")
-val password: String? = System.getenv("SPACE_USERNAME")
+val password: String? = System.getenv("SPACE_PASSWORD")
 val usr = username ?: spaceUsername // checks env first
 val psw = password ?: spacePassword // checks env first
-val urlArtifactRepository = project.property("jetbrains.url")
+val urlArtifactRepository = ext["jetbrains.url"]
 
 repositories {
   // Use Maven Central for resolving dependencies.
