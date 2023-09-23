@@ -4,8 +4,6 @@ env:
   JAVA_VERSION: '17'
   SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
   SPACE_PASS: ${{ secrets.SPACE_PASSWORD }}
-
-
 jobs:
   # build:
   #   name: Build
@@ -75,7 +73,7 @@ jobs:
           distribution: temurin
           java-version: ${{ env.JAVA_VERSION }}
           cache: gradle
-      - name: Publish artifactory to JetBrain Space
+      - name: Publish artifactory to JetBrains Space
         env: # Or as an environment variable
           SPACE_USERNAME: ${{ secrets.SPACE_USERNAME }}
           SPACE_PASSWORD: ${{ secrets.SPACE_PASSWORD }}

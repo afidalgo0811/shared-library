@@ -99,6 +99,7 @@ publishing {
       credentials {
         username = usr
         password = psw
+        println("usr $usr")
       }
     }
   }
