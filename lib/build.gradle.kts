@@ -20,10 +20,10 @@ plugins {
 // reading from gradle.properties file vs getting the value from system env in the pipeline
 val spaceUsername: String? by project
 val spacePassword: String? by project
-val username: String? = System.getenv("SPACE_USERNAME")
-val password: String? = System.getenv("SPACE_PASSWORD")
-val usr = username ?: spaceUsername // checks env first
-val psw = password ?: spacePassword // checks env first
+val userName: String? = System.getenv("SPACE_USERNAME")
+val passWord: String? = System.getenv("SPACE_PASSWORD")
+val usr = userName ?: spaceUsername // checks env first
+val psw = passWord ?: spacePassword // checks env first
 val urlArtifactRepository = ext["jetbrains.url"]
 
 repositories {
