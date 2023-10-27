@@ -40,6 +40,12 @@ repositories {
 }
 
 dependencies {
+  // https://mvnrepository.com/artifact/org.springframework.data/spring-data-relational
+  implementation("org.springframework.data:spring-data-relational:3.1.5")
+  // https://mvnrepository.com/artifact/org.springframework.data/spring-data-commons
+  implementation("org.springframework.data:spring-data-commons:3.1.5")
+
+  implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
   // Use the Kotlin JUnit 5 integration.
   testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 
