@@ -1,8 +1,10 @@
 package shared.library.order
 
 import java.time.Instant
+import org.springframework.data.annotation.CreatedBy
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.Id
+import org.springframework.data.annotation.LastModifiedBy
 import org.springframework.data.annotation.LastModifiedDate
 import org.springframework.data.annotation.Version
 import org.springframework.data.relational.core.mapping.Table
@@ -17,6 +19,8 @@ data class Order(
     val status: OrderStatus,
     @CreatedDate val createdDate: Instant?,
     @LastModifiedDate val lastModifiedDate: Instant?,
+    @CreatedBy val createdBy: String?,
+    @LastModifiedBy val lastModifiedBy: String?,
     @Version val version: Int,
 ) {
   companion object {
@@ -27,7 +31,7 @@ data class Order(
         quantity: Int,
         status: OrderStatus,
     ): Order {
-      return Order(null, bookIsbn, bookName, bookPrice, quantity, status, null, null, 0)
+      return Order(null, bookIsbn, bookName, bookPrice, quantity, status, null, null, null, null, 0)
     }
 
     fun of(
@@ -39,6 +43,8 @@ data class Order(
         status: OrderStatus,
         createdDate: Instant?,
         lastModifiedDate: Instant?,
+        createdBy: String?,
+        lastModifiedBy: String?,
         version: Int,
     ): Order {
       return Order(
@@ -50,6 +56,8 @@ data class Order(
           status,
           createdDate,
           lastModifiedDate,
+          createdBy,
+          lastModifiedBy,
           version)
     }
   }
